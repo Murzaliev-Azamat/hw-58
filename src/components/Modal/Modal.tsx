@@ -1,5 +1,6 @@
 import React from 'react';
 import Backdrop from "../Backdrop/Backdrop";
+import { motion } from "framer-motion";
 
 interface ModalProps extends React.PropsWithChildren{
   show: boolean;
@@ -11,7 +12,24 @@ const Modal: React.FC<ModalProps> = ({show, title, onClose, children}) => {
   return (
     <>
       <Backdrop show={show}/>
-      <div className="modal show" style={{display: show ? 'block' : 'none'}} onClick={onClose}>
+      <motion.div
+        className="modal show"
+        style={{display: show ? 'block' : 'none'}}
+        onClick={onClose}
+        animate={{ opacity: show ? 1 : 0, scale: show ? 1 : 0.7 }}
+        transition={{
+          default: {
+            duration: 2,
+            ease: [0, 0.71, 0.2, 1.01]
+          },
+          scale: {
+            type: "spring",
+            damping: 5,
+            stiffness: 100,
+            restDelta: 0.001
+          }
+        }}
+      >
         <div className="modal-dialog" onClick={e => e.stopPropagation()}>
           <div className="modal-content">
             <div className="modal-header">
@@ -21,7 +39,7 @@ const Modal: React.FC<ModalProps> = ({show, title, onClose, children}) => {
             {children}
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
 
   );
